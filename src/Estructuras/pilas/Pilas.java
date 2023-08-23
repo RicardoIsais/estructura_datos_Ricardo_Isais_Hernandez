@@ -9,7 +9,7 @@ public class Pilas {
 	}
 	public void push(Object value) {
 
-		if (Pilas.length<=size)
+		if (Pilas.length>=size)
 		{
 			Pilas[size]= value;
 			size++;
