@@ -18,7 +18,7 @@ public class Pilas {
 	public Object pop() {
 
 		Object value=null;
-		if(isEmpty())
+		if(!isEmpty())
 		{
 			size--;
 			value=Pilas[size];
