@@ -1,5 +1,6 @@
 package Estructuras.pruebas;
 import Estructuras.pilas.Pilas;
+import Estructuras.nodos.LinkedStack;
 import java.util.Scanner;
 
 public class Principal {
@@ -16,19 +17,16 @@ public class Principal {
 		palabraSinEspacios = palabra.replace(" ", ""); //Toma dos argumenos el primero lo que deseas remplazar y el segundo con lo que lo remplazaras
 		if (esPalindromo(palabraSinEspacios)) {
             System.out.println("La palabra es un palíndromo.");
-            String cadena1 = "((()))";
-            String cadena2 = "(";
-            String cadena3 = "())";
-            
-            System.out.println("Cadena 1: " + verificaParentesis(cadena1)); // Debería imprimir true
-            System.out.println("Cadena 2: " + verificaParentesis(cadena2)); // Debería imprimir false
-            System.out.println("Cadena 3: " + verificaParentesis(cadena3)); // Debería imprimir false
-        
             
         } else {
             System.out.println("La palabra no es un palíndromo.");
         }
-		System.out.println("¡Quieres poner otra palabra? Escribe 1 si es asi, si no escribe otro numero");
+		System.out.println("Escribe una ecuacion: ");
+		palabra=leer.nextLine();
+        System.out.println(verificaParentesis(palabra)); 
+
+		
+		System.out.println("¡Quieres poner otra palabra? Escribe 1 si es asi, si no escribe otro numero.");
 
 		respuestaCadena= leer.nextLine();
 
@@ -79,11 +77,12 @@ public class Principal {
 
 	    return palabra.equalsIgnoreCase(palabraInvertida);   
 	}
-	public static boolean verificaParentesis(String cadena) {
-        Pilas pila = new Pilas(cadena.length());
+	public static boolean verificaParentesis(String palabra) {
+	    int longitud = palabra.length();
+	    Pilas pila = new Pilas(longitud);
 
-        for (int i = 0; i < cadena.length(); i++) {
-            char c = cadena.charAt(i);
+        for (int i = 0; i < palabra.length(); i++) {
+            char c = palabra.charAt(i);
 
             if (c == '(') {
                 pila.push(c);
