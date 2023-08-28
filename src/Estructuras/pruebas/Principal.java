@@ -13,13 +13,22 @@ public class Principal {
       	do {
 		System.out.print("Ingresar una palabra: ");
 		palabra=leer.nextLine();
-		palabraSinEspacios = palabra.replace(" ", "");
+		palabraSinEspacios = palabra.replace(" ", ""); //Toma dos argumenos el primero lo que deseas remplazar y el segundo con lo que lo remplazaras
 		if (esPalindromo(palabraSinEspacios)) {
             System.out.println("La palabra es un palíndromo.");
+            String cadena1 = "((()))";
+            String cadena2 = "(";
+            String cadena3 = "())";
+            
+            System.out.println("Cadena 1: " + verificaParentesis(cadena1)); // Debería imprimir true
+            System.out.println("Cadena 2: " + verificaParentesis(cadena2)); // Debería imprimir false
+            System.out.println("Cadena 3: " + verificaParentesis(cadena3)); // Debería imprimir false
+        
+            
         } else {
             System.out.println("La palabra no es un palíndromo.");
         }
-		System.out.print("\n¿Desea ejecutar el programa nuevamente? Poner 1 si es asi / poner otro numero diferente a 1: ");
+		System.out.println("¡Quieres poner otra palabra? Escribe 1 si es asi, si no escribe otro numero");
 
 		respuestaCadena= leer.nextLine();
 
@@ -38,6 +47,7 @@ public class Principal {
 		{
 
 		System.out.print("Fin del programa");
+
 
 		respuesta=false;
 
@@ -64,10 +74,31 @@ public class Principal {
 
 	    String palabraInvertida = "";
 	    while (!pila.isEmpty()) {
-	        palabraInvertida += pila.pop();
+	        palabraInvertida += pila.pop();  //Toma la parte superior de la pila y lo agrega a la variable , por lo que se construye la palabra invertida
 	    }
 
-	    return palabra.equalsIgnoreCase(palabraInvertida);
+	    return palabra.equalsIgnoreCase(palabraInvertida);   
 	}
+	public static boolean verificaParentesis(String cadena) {
+        Pilas pila = new Pilas(cadena.length());
+
+        for (int i = 0; i < cadena.length(); i++) {
+            char c = cadena.charAt(i);
+
+            if (c == '(') {
+                pila.push(c);
+            } else if (c == ')') {
+                if (pila.isEmpty()) {
+                    return false; // No hay paréntesis de apertura correspondiente
+                }
+                pila.pop();
+            }
+        }
+
+        return pila.isEmpty(); // Si la pila está vacía, todos los paréntesis se cerraron correctamente
+    }
+	
+
+
 
 }
