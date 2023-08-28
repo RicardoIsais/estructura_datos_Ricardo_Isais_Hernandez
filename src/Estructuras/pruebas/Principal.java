@@ -23,10 +23,18 @@ public class Principal {
         }
 		System.out.println("Escribe una ecuacion: ");
 		palabra=leer.nextLine();
-        System.out.println(verificaParentesis(palabra)); 
+        if (verificarParentesis(palabra)==true)
+        {
+        	System.out.println("Contiene bien los parentesis");	
+        }
+        else
+        {
+        	System.out.println("No contiene bien los parentesis");	
+        	
+        }
 
 		
-		System.out.println("¡Quieres poner otra palabra? Escribe 1 si es asi, si no escribe otro numero.");
+		System.out.println("¿Quieres poner otra palabra? Escribe 1 si es asi, si no escribe otro numero.");
 
 		respuestaCadena= leer.nextLine();
 
@@ -77,16 +85,16 @@ public class Principal {
 
 	    return palabra.equalsIgnoreCase(palabraInvertida);   
 	}
-	public static boolean verificaParentesis(String palabra) {
+	public static boolean verificarParentesis(String palabra) {
 	    int longitud = palabra.length();
 	    Pilas pila = new Pilas(longitud);
 
         for (int i = 0; i < palabra.length(); i++) {
-            char c = palabra.charAt(i);
+            char caracter = palabra.charAt(i);
 
-            if (c == '(') {
-                pila.push(c);
-            } else if (c == ')') {
+            if (caracter == '(') {
+                pila.push(caracter);
+            } else if (caracter == ')') {
                 if (pila.isEmpty()) {
                     return false; // No hay paréntesis de apertura correspondiente
                 }
