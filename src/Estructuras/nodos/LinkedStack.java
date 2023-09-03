@@ -18,7 +18,7 @@ public class LinkedStack {
 		return size==0;             //Devuelve un boleano   
 		// return null==apuntador;     asi se pone cuando se compara un null
 	}
-	public Object peack()
+	public Object peek()
 	{
 		return apuntador.getDato();
 	}
@@ -28,7 +28,6 @@ public class LinkedStack {
 		if (null==apuntador)
 		{
 			this.apuntador=nodo;
-			this.size++;
 		}
 		nodo.setEnlace(apuntador);
 		this.apuntador=nodo;
@@ -47,28 +46,14 @@ public class LinkedStack {
 	}
 	
 	public String toString() {
-		String s="";
-		
-		Nodo temporal=apuntador;
-		while (null!=temporal.getEnlace()) {
-			s=temporal.getDato()+"<-"+s;
-			temporal=temporal.getEnlace();
-			
-		}
-		return s;
+	    String s = "";
+	    Nodo temporal = apuntador;
+	    while (temporal !=null) {
+	        s = temporal.getDato() + "<-" + s;
+	        temporal = temporal.getEnlace();
+	    }
+	    return s;
 	}
-		
-		
-		
-		
-		
-		
-		
-		
-	
-	
-
-
 
 }
 
