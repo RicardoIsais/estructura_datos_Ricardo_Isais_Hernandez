@@ -6,47 +6,54 @@ public class TareaNotacion {
 
 	public static void main(String[] args) {
 		Scanner leer = new Scanner(System.in);
-		String ecuacion, ecuacionSinEspacios, postfija = "";
+		String ecuacion, ecuacionSinEspacios, postfija = "",postfijaUno="";
 		char caracter,auxiliar;
-		double resultado,operacionUno,operacionDos,resultadoCalculo;
+		double resultado,numeroUnoD,numeroDosD,resultadoCalculo;
 		System.out.println("Escribe una ecuación: ");
 		ecuacion = leer.nextLine();
 		ecuacionSinEspacios = ecuacion.replaceAll(" ", "");
 		if (verificarParentesis(ecuacionSinEspacios)) {
 			LinkedStack resultadoRPN = new LinkedStack();
+			StringBuilder numeroActual= new StringBuilder();
 			for (int i = 0; i < ecuacionSinEspacios.length(); i++) {
 				caracter = ecuacionSinEspacios.charAt(i);
 				if (prioridad(caracter) > 0) {
-					while (resultadoRPN.isEmpty() == false && prioridad((Character) resultadoRPN.peek()) >= prioridad(caracter)) {
-						postfija += resultadoRPN.pop();
-					}
-					resultadoRPN.push(caracter);
-				} else if (caracter == ')') {
-					auxiliar = (Character) resultadoRPN.pop();
-					while (auxiliar != '(') {
-						postfija += auxiliar;
-						auxiliar = (Character) resultadoRPN.pop();
-					}
-				} else if (caracter == '(') {
-					resultadoRPN.push(caracter);
-				} else {
-					postfija += caracter;
+				while (resultadoRPN.isEmpty() == false && prioridad((Character) resultadoRPN.peek()) >= prioridad(caracter)) {
+				postfijaUno += resultadoRPN.pop();
 				}
-			}
-			for (int i = 0; i < resultadoRPN.size(); i++) {
-				postfija += resultadoRPN.pop();
-			}
-			System.out.println("Notacion polaca inversa: " + postfija);
+				resultadoRPN.push(caracter);
+				} else if (caracter == '(') {
+				resultadoRPN.push(caracter);
+				} else if (caracter == ')') {
+				auxiliar = (Character) resultadoRPN.pop();
+				while (auxiliar != '(') {
+				postfijaUno += auxiliar;
+				auxiliar = (Character) resultadoRPN.pop();
+				}
+				} else {
+				numeroActual.append(caracter);
+				if (i + 1 >= ecuacionSinEspacios.length() || !Character.isDigit(ecuacionSinEspacios.charAt(i + 1))) {
+				                        postfijaUno += numeroActual.toString() + " "; // Agregar el número a la expresión
+				                        numeroActual.setLength(0); // Reiniciar el número actual
+				                    }
+
+				}
+				}
+				for (int i = 0; i < resultadoRPN.size(); i++) {
+				postfijaUno += resultadoRPN.pop();
+				}
+				System.out.println("Notacion polaca inversa: " + postfijaUno);
+				postfija=postfijaUno.replaceAll(" ", "");
 			// Solucion
-			for (int i = 0; i < postfija.length(); i++) {
+			for (int i = 0; i < postfija.length(); i++) {			
 				caracter = postfija.charAt(i);
 				if (prioridad(caracter) > 0) {
-					Object objOperacionUno = resultadoRPN.pop();
-					Object objOperacionDos = resultadoRPN.pop();
-					if (objOperacionUno instanceof Double && objOperacionDos instanceof Double) { //Devuelve un valor boleano, verifica que ambos objectos son de tipo double antes de realizar alguna operacion
-						operacionUno = (Double) objOperacionUno;
-						operacionDos = (Double) objOperacionDos;
-						resultadoCalculo = calculo(operacionUno, operacionDos, caracter);
+					Object numeroUno = resultadoRPN.pop();
+					Object numeroDos = resultadoRPN.pop();
+					if (numeroUno instanceof Double && numeroDos instanceof Double) { //Devuelve un valor boleano, verifica que ambos objectos son de tipo double antes de realizar alguna operacion
+						numeroUnoD = (Double) numeroUno;
+						numeroDosD = (Double) numeroDos;
+						resultadoCalculo = calculo(numeroUnoD, numeroDosD, caracter);
 						resultadoRPN.push(resultadoCalculo);
 					}
 				} else {
@@ -89,26 +96,31 @@ public class TareaNotacion {
 		return prioridad;
 	}
 
-	public static double calculo(double operacionUno, double operacionDos, char operador) {
+	public static double calculo(double numeroUno, double numeroDos, char operador) {
 		double resultado = 0.0;
 
 		switch (operador) {
 		case '+':
-			resultado = operacionUno + operacionDos;
+			resultado = numeroUno + numeroDos;
 			break;
 		case '-':
-			resultado = operacionDos - operacionUno;
+			resultado = numeroDos - numeroUno;
 			break;
 		case '*':
-			resultado = operacionUno * operacionDos;
+			resultado = numeroUno * numeroDos;
 			break;
 		case '/':
-			resultado = operacionDos / operacionUno;
-			break;
+			if(numeroUno!=0)
+			{
+				resultado = numeroDos / numeroUno;
+				break;
+				
+			}
+			else {
+				break;
+			}
+			
 		}
 		return resultado;
 	}
 }
-
-
-

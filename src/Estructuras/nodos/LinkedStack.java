@@ -28,6 +28,7 @@ public class LinkedStack {
 		if (null==apuntador)
 		{
 			this.apuntador=nodo;
+			
 		}
 		nodo.setEnlace(apuntador);
 		this.apuntador=nodo;
@@ -48,11 +49,11 @@ public class LinkedStack {
 	public String toString() {
 	    String s = "";
 	    Nodo temporal = apuntador;
-	    while (temporal !=null) {
+	    while (null!=temporal) {
 	        s = temporal.getDato() + "<-" + s;
 	        temporal = temporal.getEnlace();
 	    }
-	    return s;
+	    return s.toString();
 	}
 
 }
