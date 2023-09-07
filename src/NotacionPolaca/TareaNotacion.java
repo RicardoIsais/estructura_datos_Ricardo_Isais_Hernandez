@@ -6,62 +6,58 @@ public class TareaNotacion {
 
 	public static void main(String[] args) {
 		Scanner leer = new Scanner(System.in);
-		String ecuacion, ecuacionSinEspacios, postfija = "",postfijaUno="";
-		char caracter,auxiliar;
-		double resultado,numeroUnoD,numeroDosD,resultadoCalculo;
-		System.out.println("Escribe una ecuación: ");
-		ecuacion = leer.nextLine();
-		ecuacionSinEspacios = ecuacion.replaceAll(" ", "");
-		if (verificarParentesis(ecuacionSinEspacios)) {
-			LinkedStack resultadoRPN = new LinkedStack();
-			StringBuilder numeroActual= new StringBuilder();
-			for (int i = 0; i < ecuacionSinEspacios.length(); i++) {
-				caracter = ecuacionSinEspacios.charAt(i);
-				if (prioridad(caracter) > 0) {
-				while (resultadoRPN.isEmpty() == false && prioridad((Character) resultadoRPN.peek()) >= prioridad(caracter)) {
-				postfijaUno += resultadoRPN.pop();
-				}
-				resultadoRPN.push(caracter);
-				} else if (caracter == '(') {
-				resultadoRPN.push(caracter);
-				} else if (caracter == ')') {
-				auxiliar = (Character) resultadoRPN.pop();
-				while (auxiliar != '(') {
-				postfijaUno += auxiliar;
-				auxiliar = (Character) resultadoRPN.pop();
-				}
-				} else {
-				numeroActual.append(caracter);
-				if (i + 1 >= ecuacionSinEspacios.length() || !Character.isDigit(ecuacionSinEspacios.charAt(i + 1))) {
-				                        postfijaUno += numeroActual.toString() + " "; // Agregar el número a la expresión
-				                        numeroActual.setLength(0); // Reiniciar el número actual
-				                    }
+        String ecuacion, ecuacionSinEspacios, postfija = "", postfijaUno = "";
+        char caracter, auxiliar;
+        double resultado, numeroUnoD, numeroDosD, resultadoCalculo;
+        System.out.println("Escribe una ecuación: ");
+        ecuacion = leer.nextLine();
+        ecuacionSinEspacios = ecuacion.replaceAll(" ", "");
+        if (verificarParentesis(ecuacionSinEspacios)) {
+            LinkedStack resultadoRPN = new LinkedStack();
+            StringBuilder numeroActual = new StringBuilder();
+            for (int i = 0; i < ecuacionSinEspacios.length(); i++) {
+                caracter = ecuacionSinEspacios.charAt(i);
+                if (prioridad(caracter) > 0) {
+                    while (!resultadoRPN.isEmpty() && prioridad((Character) resultadoRPN.peek()) >= prioridad(caracter)) {
+                        postfijaUno += resultadoRPN.pop() + " ";
+                    }
+                    resultadoRPN.push(caracter);
+                } else if (caracter == '(') {
+                    resultadoRPN.push(caracter);
+                } else if (caracter == ')') {
+                    auxiliar = (Character) resultadoRPN.pop();
+                    while (auxiliar != '(') {
+                        postfijaUno += auxiliar + " ";
+                        auxiliar = (Character) resultadoRPN.pop();
+                    }
+                } else {
+                    numeroActual.append(caracter);
+                    if (i + 1 >= ecuacionSinEspacios.length() || !Character.isDigit(ecuacionSinEspacios.charAt(i + 1))) {
+                        postfijaUno += numeroActual.toString() + " ";
+                        numeroActual.setLength(0);
+                    }
+                }
+            }
+            while (!resultadoRPN.isEmpty()) {
+                postfijaUno += resultadoRPN.pop() + " ";
+            }
+            System.out.println("Notacion polaca inversa: " + postfijaUno);
+            postfija = postfijaUno.replaceAll(" ", "");
 
-				}
-				}
-				for (int i = 0; i < resultadoRPN.size(); i++) {
-				postfijaUno += resultadoRPN.pop();
-				}
-				System.out.println("Notacion polaca inversa: " + postfijaUno);
-				postfija=postfijaUno.replaceAll(" ", "");
-			// Solucion
-			for (int i = 0; i < postfija.length(); i++) {			
-				caracter = postfija.charAt(i);
-				if (prioridad(caracter) > 0) {
-					Object numeroUno = resultadoRPN.pop();
-					Object numeroDos = resultadoRPN.pop();
-					if (numeroUno instanceof Double && numeroDos instanceof Double) { //Devuelve un valor boleano, verifica que ambos objectos son de tipo double antes de realizar alguna operacion
-						numeroUnoD = (Double) numeroUno;
-						numeroDosD = (Double) numeroDos;
-						resultadoCalculo = calculo(numeroUnoD, numeroDosD, caracter);
-						resultadoRPN.push(resultadoCalculo);
-					}
-				} else {
-					resultadoRPN.push((double) (Character.getNumericValue(caracter)));
-				}
-			}
-			resultado = (double) resultadoRPN.pop();
-			System.out.println("Resultado: " + resultado);
+            // Solucion
+            for (int i = 0; i < postfija.length(); i++) {
+                caracter = postfija.charAt(i);
+                if (prioridad(caracter) > 0) {
+                    double numeroUno = (double) resultadoRPN.pop();
+                    double numeroDos = (double) resultadoRPN.pop();
+                    resultadoCalculo = calculo(numeroUno, numeroDos, caracter);
+                    resultadoRPN.push(resultadoCalculo);
+                } else if (Character.isDigit(caracter)) {
+                    resultadoRPN.push((double) (Character.getNumericValue(caracter)));
+                }
+            }
+            resultado = (double) resultadoRPN.pop();
+            System.out.println("Resultado: " + resultado);
 
 		} else {
 			System.out.println("Error en los paréntesis o en la expresión.");

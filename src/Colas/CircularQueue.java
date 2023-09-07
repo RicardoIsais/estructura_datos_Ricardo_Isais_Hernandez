@@ -27,8 +27,8 @@ public class CircularQueue {
 	}
 	
 	public Object dequeue() {
+		Object value=null;
 		if (queue[front]!=null) {
-			Object value=null;
 			value=queue[front];
 			queue[front]=null;
 			front ++;
@@ -38,6 +38,37 @@ public class CircularQueue {
 			}
 		}
 		return value;
+	}
+	
+	public  boolean isEmpty() {
+		return size==0;             
+	}
+	public int size() {
+
+		return size;
+	}
+	public Object front() {
+		return queue[front];
+		
+	}
+	public Object rear() {
+		int rearAux=rear-1;
+		rearAux=rearAux<0?queue.length-1:rearAux;   //If ternario
+		return queue[rearAux];
+	}
+	public String toString()
+	{
+		String s="";
+		int sizeAux=size;
+		int rearAux=rear;
+		while (sizeAux>0)
+		{
+			sizeAux--;
+			rearAux--;
+			rearAux=rearAux<0?queue.length-1:rearAux;   //If ternario
+			s+=queue[rearAux]+"->";
+		}
+		return s;
 	}
 	
 }
