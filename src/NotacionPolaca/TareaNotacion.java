@@ -2,121 +2,202 @@ package NotacionPolaca;
 import Estructuras.pilas.Pilas;
 import Estructuras.nodos.LinkedStack;
 import java.util.Scanner;
+
 public class TareaNotacion {
 
 	public static void main(String[] args) {
-		Scanner leer = new Scanner(System.in);
-        String ecuacion, ecuacionSinEspacios, postfija = "", postfijaUno = "";
-        char caracter, auxiliar;
-        double resultado, numeroUnoD, numeroDosD, resultadoCalculo;
+        Scanner leer = new Scanner(System.in);
         System.out.println("Escribe una ecuación: ");
-        ecuacion = leer.nextLine();
-        ecuacionSinEspacios = ecuacion.replaceAll(" ", "");
-        if (verificarParentesis(ecuacionSinEspacios)) {
-            LinkedStack resultadoRPN = new LinkedStack();
-            StringBuilder numeroActual = new StringBuilder();
-            for (int i = 0; i < ecuacionSinEspacios.length(); i++) {
-                caracter = ecuacionSinEspacios.charAt(i);
-                if (prioridad(caracter) > 0) {
-                    while (!resultadoRPN.isEmpty() && prioridad((Character) resultadoRPN.peek()) >= prioridad(caracter)) {
-                        postfijaUno += resultadoRPN.pop() + " ";
-                    }
-                    resultadoRPN.push(caracter);
-                } else if (caracter == '(') {
-                    resultadoRPN.push(caracter);
-                } else if (caracter == ')') {
-                    auxiliar = (Character) resultadoRPN.pop();
-                    while (auxiliar != '(') {
-                        postfijaUno += auxiliar + " ";
-                        auxiliar = (Character) resultadoRPN.pop();
-                    }
-                } else {
-                    numeroActual.append(caracter);
-                    if (i + 1 >= ecuacionSinEspacios.length() || !Character.isDigit(ecuacionSinEspacios.charAt(i + 1))) {
-                        postfijaUno += numeroActual.toString() + " ";
-                        numeroActual.setLength(0);
-                    }
-                }
+        String ecuacion = leer.nextLine();
+        double resultado = evaluarExpresion(ecuacion);
+        if (verificarParentesis(ecuacion)==true)
+        {
+        	if (resultado != -1) {
+            	System.out.println("Ecuación inversa: " + obtenerEcuacionInversa(ecuacion));
+                System.out.println("Resultado: " + resultado);
+            } else {
+                System.out.println("Error en la expresión.");
             }
-            while (!resultadoRPN.isEmpty()) {
-                postfijaUno += resultadoRPN.pop() + " ";
-            }
-            System.out.println("Notacion polaca inversa: " + postfijaUno);
-            postfija = postfijaUno.replaceAll(" ", "");
-
-            // Solucion
-            for (int i = 0; i < postfija.length(); i++) {
-                caracter = postfija.charAt(i);
-                if (prioridad(caracter) > 0) {
-                    double numeroUno = (double) resultadoRPN.pop();
-                    double numeroDos = (double) resultadoRPN.pop();
-                    resultadoCalculo = calculo(numeroUno, numeroDos, caracter);
-                    resultadoRPN.push(resultadoCalculo);
-                } else if (Character.isDigit(caracter)) {
-                    resultadoRPN.push((double) (Character.getNumericValue(caracter)));
-                }
-            }
-            resultado = (double) resultadoRPN.pop();
-            System.out.println("Resultado: " + resultado);
-
-		} else {
-			System.out.println("Error en los paréntesis o en la expresión.");
-		}
-	}
+        }
+        else
+        {
+        	System.out.println("Error en los parentesis.");	
+        }
+        
+    }
 	public static boolean verificarParentesis(String palabra) {
 		int longitud = palabra.length();
 		Pilas pila = new Pilas(longitud);
 		for (int i = 0; i < palabra.length(); i++) {
-			char caracter = palabra.charAt(i);
-			if (caracter == '(') {
-				pila.push(caracter);
-			} else if (caracter == ')') {
-				if (pila.isEmpty()) {
-					return false; // No hay paréntesis de apertura correspondiente
-				}
-				pila.pop();
-			}
+		char caracter = palabra.charAt(i);
+		if (caracter == '(') {
+		pila.push(caracter);
+		} else if (caracter == ')') {
+		if (pila.isEmpty()) {
+		return false; // No hay paréntesis de apertura correspondiente
 		}
-		return pila.isEmpty(); // Si la pila está vacía, todos los paréntesis se cerraron correctamente
-	}
-
-	public static int prioridad(char operador) {
-		int prioridad = 0;
-
-		if (operador == '+' || operador == '-') {
-			prioridad = 1;
-		} else if (operador == '*' || operador == '/') {
-			prioridad = 2;
+		pila.pop();
+		}
+		}
+		return pila.isEmpty(); // Si la pila está vacía, todos los paréntesis se cerraron correctamente
 		}
 
-		return prioridad;
-	}
+    public static String obtenerEcuacionInversa(String ecuacion) {
+    	String respuesta="";
+        LinkedStack ecuacionInversa = new LinkedStack();
+        LinkedStack operadores = new LinkedStack();
+        int i = 0;
+        while (i < ecuacion.length()) {
+            char caracter = ecuacion.charAt(i);
+            if (Character.isDigit(caracter)) {
+                StringBuilder numeroActual = new StringBuilder();
+                while (i < ecuacion.length() && (Character.isDigit(ecuacion.charAt(i)) || ecuacion.charAt(i) == '.')) {
+                    numeroActual.append(ecuacion.charAt(i));
+                    i++;
+                }
+                ecuacionInversa.push(numeroActual.toString());
+            } else if (caracter == '(') {
+                operadores.push(caracter);
+                i++;
+            } else if (caracter == ')') {
+                while (!operadores.isEmpty() && (Character)operadores.peek() != '(') {
+                    ecuacionInversa.push(operadores.pop().toString());
+                }
+                if (!operadores.isEmpty() && (Character) operadores.peek() == '(') {
+                    operadores.pop();
+                } else {
+                    respuesta= "Error en los paréntesis";
+                }
+                i++;
+            } else if (esOperador(caracter)) {
+                while (!operadores.isEmpty() && prioridad( (Character)operadores.peek()) >= prioridad(caracter)) {
+                    ecuacionInversa.push(operadores.pop().toString());
+                }
+                operadores.push(caracter);
+                i++;
+            } else if (caracter == ' ') {
+                i++;
+            } else {
+                respuesta= "Caracter no válido";
+            }
+        }
 
-	public static double calculo(double numeroUno, double numeroDos, char operador) {
-		double resultado = 0.0;
+        while (!operadores.isEmpty()) {
+            if ((Character)operadores.peek() == '(') {
+                respuesta= "Error en los paréntesis";
+            }
+            ecuacionInversa.push(operadores.pop().toString());
+        }
 
-		switch (operador) {
-		case '+':
-			resultado = numeroUno + numeroDos;
-			break;
-		case '-':
-			resultado = numeroDos - numeroUno;
-			break;
-		case '*':
-			resultado = numeroUno * numeroDos;
-			break;
-		case '/':
-			if(numeroUno!=0)
-			{
-				resultado = numeroDos / numeroUno;
-				break;
-				
-			}
-			else {
-				break;
-			}
-			
-		}
-		return resultado;
-	}
+        StringBuilder ecuacionInversaStr = new StringBuilder();
+        while (!ecuacionInversa.isEmpty()) {
+            ecuacionInversaStr.append(ecuacionInversa.pop()).append(" ");
+        }
+
+        respuesta= ecuacionInversaStr.toString();
+        return respuesta;
+        
+    }
+    public static double evaluarExpresion(String ecuacion) {
+    	double respuesta=-1;
+        LinkedStack numeros = new LinkedStack();
+        LinkedStack operadores = new LinkedStack();
+        int i = 0;
+        while (i < ecuacion.length()) {
+            char caracter = ecuacion.charAt(i);
+            if (Character.isDigit(caracter)) {
+                StringBuilder numeroActual = new StringBuilder();
+                while (i < ecuacion.length() && (Character.isDigit(ecuacion.charAt(i)) || ecuacion.charAt(i) == '.')) {
+                    numeroActual.append(ecuacion.charAt(i));
+                    i++;
+                }
+                numeros.push(Double.parseDouble(numeroActual.toString()));
+            } else if (caracter == '(') {
+                operadores.push(caracter);
+                i++;
+            } else if (caracter == ')') {
+                while (!operadores.isEmpty() && (Character) operadores.peek() != '(') {
+                    realizarOperacion(numeros, operadores);
+                }
+                if (!operadores.isEmpty() && (Character) operadores.peek() == '(') {
+                    operadores.pop();
+                } else {
+                    respuesta= -1; // Error en los paréntesis
+                }
+                i++;
+            } else if (esOperador(caracter)) {
+                while (!operadores.isEmpty() &&   prioridad((Character) operadores.peek()) >= prioridad(caracter)) {
+                    realizarOperacion(numeros, operadores);
+                }
+                operadores.push(caracter);
+                i++;
+            } else if (caracter == ' ') {
+                i++;
+            } else {
+            	 respuesta= -1; // Caracter no válido
+            }
+        }
+
+        while (!operadores.isEmpty()) {
+            if ((Character) operadores.peek() == '(') {
+            	 respuesta= -1; // Error en los paréntesis
+            }
+            realizarOperacion(numeros, operadores);
+        }
+
+        if (numeros.size() == 1 && operadores.isEmpty()) {
+        	 respuesta= (double) numeros.pop();
+        } else {
+        	 respuesta= -1; // Error en la expresión
+        }
+        return respuesta;
+    }
+
+    public static boolean esOperador(char c) {
+        return c == '+' || c == '-' || c == '*' || c == '/';
+    }
+
+    public static int prioridad(char operador) {
+    	int prioridad=0;
+        if (operador == '+' || operador == '-') {
+            prioridad= 1;
+        } else if (operador == '*' || operador == '/') {
+            prioridad= 2;
+        }
+        return prioridad; // Prioridad más baja
+    }
+
+    public static void realizarOperacion(LinkedStack numeros, LinkedStack operadores) {
+        if (numeros.size() >= 2 && !operadores.isEmpty()) {
+            double numero2 = (double)numeros.pop();
+            double numero1 = (double)numeros.pop();
+            char operador = (Character) operadores.pop();
+            double resultado = calcular(numero1, numero2, operador);
+            numeros.push(resultado);
+        }
+    }
+
+    public static double calcular(double numero1, double numero2, char operador) {
+        double resultado = 0.0;
+        
+        switch (operador) {
+            case '+':
+                resultado = numero1 + numero2;
+                break;
+            case '-':
+                resultado = numero1 - numero2;
+                break;
+            case '*':
+                resultado = numero1 * numero2;
+                break;
+            case '/':
+                if (numero2 != 0) {
+                    resultado = numero1 / numero2;
+                } else {
+                    resultado = -1; // División por cero
+                }
+                break;
+                    }
+        return resultado;
+    }
 }
