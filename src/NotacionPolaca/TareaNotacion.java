@@ -42,116 +42,125 @@ public class TareaNotacion {
 		return pila.isEmpty(); // Si la pila está vacía, todos los paréntesis se cerraron correctamente
 		}
 
-    public static String obtenerEcuacionInversa(String ecuacion) {
-    	String respuesta="";
-        LinkedStack ecuacionInversa = new LinkedStack();
-        LinkedStack operadores = new LinkedStack();
-        int i = 0;
-        while (i < ecuacion.length()) {
-            char caracter = ecuacion.charAt(i);
-            if (Character.isDigit(caracter)) {
-                StringBuilder numeroActual = new StringBuilder();
-                while (i < ecuacion.length() && (Character.isDigit(ecuacion.charAt(i)) || ecuacion.charAt(i) == '.')) {
-                    numeroActual.append(ecuacion.charAt(i));
-                    i++;
-                }
-                ecuacionInversa.push(numeroActual.toString());
-            } else if (caracter == '(') {
-                operadores.push(caracter);
-                i++;
-            } else if (caracter == ')') {
-                while (!operadores.isEmpty() && (Character)operadores.peek() != '(') {
-                    ecuacionInversa.push(operadores.pop().toString());
-                }
-                if (!operadores.isEmpty() && (Character) operadores.peek() == '(') {
-                    operadores.pop();
-                } else {
-                    respuesta= "Error en los paréntesis";
-                }
-                i++;
-            } else if (esOperador(caracter)) {
-                while (!operadores.isEmpty() && prioridad( (Character)operadores.peek()) >= prioridad(caracter)) {
-                    ecuacionInversa.push(operadores.pop().toString());
-                }
-                operadores.push(caracter);
-                i++;
-            } else if (caracter == ' ') {
-                i++;
-            } else {
-                respuesta= "Caracter no válido";
-            }
-        }
+	public static String obtenerEcuacionInversa(String ecuacion) {
+	    String ecuacionInversaStr = ""; // Usamos una cadena para almacenar la ecuación inversa
 
-        while (!operadores.isEmpty()) {
-            if ((Character)operadores.peek() == '(') {
-                respuesta= "Error en los paréntesis";
-            }
-            ecuacionInversa.push(operadores.pop().toString());
-        }
+	    LinkedStack ecuacionInversa = new LinkedStack();
+	    LinkedStack operadores = new LinkedStack();
+	    int i = 0;
+	    while (i < ecuacion.length()) {
+	        char caracter = ecuacion.charAt(i);
+	        if (Character.isDigit(caracter)) {
+	            String numeroActual = "";
+	            while (i < ecuacion.length() && (Character.isDigit(ecuacion.charAt(i)) || ecuacion.charAt(i) == '.')) {
+	                numeroActual += ecuacion.charAt(i);
+	                i++;
+	            }
+	            ecuacionInversa.push(numeroActual);
+	        } else if (caracter == '(') {
+	            operadores.push(caracter);
+	            i++;
+	        } else if (caracter == ')') {
+	            while (!operadores.isEmpty() && (Character) operadores.peek() != '(') {
+	                ecuacionInversa.push(operadores.pop().toString());
+	            }
+	            if (!operadores.isEmpty() && (Character) operadores.peek() == '(') {
+	                operadores.pop();
+	            } else {
+	                ecuacionInversaStr = "Error en los paréntesis";
+	            }
+	            i++;
+	        } else if (esOperador(caracter)) {
+	            while (!operadores.isEmpty() && prioridad((Character) operadores.peek()) >= prioridad(caracter)) {
+	                ecuacionInversa.push(operadores.pop().toString());
+	            }
+	            operadores.push(caracter);
+	            i++;
+	        } else if (caracter == ' ') {
+	            i++;
+	        } else {
+	            ecuacionInversaStr = "Caracter no válido";
+	        }
+	    }
 
-        StringBuilder ecuacionInversaStr = new StringBuilder();
-        while (!ecuacionInversa.isEmpty()) {
-            ecuacionInversaStr.append(ecuacionInversa.pop()).append(" ");
-        }
+	    while (!operadores.isEmpty()) {
+	        if ((Character) operadores.peek() == '(') {
+	            ecuacionInversaStr = "Error en los paréntesis";
+	        }
+	        ecuacionInversa.push(operadores.pop().toString());
+	    }
 
-        respuesta= ecuacionInversaStr.toString();
-        return respuesta;
-        
-    }
-    public static double evaluarExpresion(String ecuacion) {
-    	double respuesta=-1;
-        LinkedStack numeros = new LinkedStack();
-        LinkedStack operadores = new LinkedStack();
-        int i = 0;
-        while (i < ecuacion.length()) {
-            char caracter = ecuacion.charAt(i);
-            if (Character.isDigit(caracter)) {
-                StringBuilder numeroActual = new StringBuilder();
-                while (i < ecuacion.length() && (Character.isDigit(ecuacion.charAt(i)) || ecuacion.charAt(i) == '.')) {
-                    numeroActual.append(ecuacion.charAt(i));
-                    i++;
-                }
-                numeros.push(Double.parseDouble(numeroActual.toString()));
-            } else if (caracter == '(') {
-                operadores.push(caracter);
-                i++;
-            } else if (caracter == ')') {
-                while (!operadores.isEmpty() && (Character) operadores.peek() != '(') {
-                    realizarOperacion(numeros, operadores);
-                }
-                if (!operadores.isEmpty() && (Character) operadores.peek() == '(') {
-                    operadores.pop();
-                } else {
-                    respuesta= -1; // Error en los paréntesis
-                }
-                i++;
-            } else if (esOperador(caracter)) {
-                while (!operadores.isEmpty() &&   prioridad((Character) operadores.peek()) >= prioridad(caracter)) {
-                    realizarOperacion(numeros, operadores);
-                }
-                operadores.push(caracter);
-                i++;
-            } else if (caracter == ' ') {
-                i++;
-            } else {
-            	 respuesta= -1; // Caracter no válido
-            }
-        }
+	    while (!ecuacionInversa.isEmpty()) {
+	        ecuacionInversaStr += ecuacionInversa.pop() + " ";
+	    }
 
-        while (!operadores.isEmpty()) {
-            if ((Character) operadores.peek() == '(') {
-            	 respuesta= -1; // Error en los paréntesis
-            }
-            realizarOperacion(numeros, operadores);
-        }
+	    return ecuacionInversaStr; // Devolvemos la cadena directamente sin necesidad de trim()
+	}
+	public static double evaluarExpresion(String ecuacion) {
+	    double respuesta = -1;
+	    LinkedStack numeros = new LinkedStack();
+	    LinkedStack operadores = new LinkedStack();
+	    int i = 0;
+	    String numeroActual = ""; // Utilizamos una cadena para construir el número actual
+	    while (i < ecuacion.length()) {
+	        char caracter = ecuacion.charAt(i);
+	        if (Character.isDigit(caracter) || caracter == '.') {
+	            numeroActual += caracter; // Agregamos el carácter al número actual
+	            i++;
+	        } else if (Character.isWhitespace(caracter)) {
+	            i++;
+	        } else {
+	            if (!numeroActual.isEmpty()) {
+	                numeros.push(Double.parseDouble(numeroActual));
+	                numeroActual = ""; // Reiniciamos el número actual
+	            }
+	            
+	            if (caracter == '(') {
+	                operadores.push(caracter);
+	                i++;
+	            } else if (caracter == ')') {
+	                while (!operadores.isEmpty() && (Character) operadores.peek() != '(') {
+	                    realizarOperacion(numeros, operadores);
+	                }
+	                if (!operadores.isEmpty() && (Character) operadores.peek() == '(') {
+	                    operadores.pop();
+	                } else {
+	                    respuesta = -1; // Error en los paréntesis
+	                }
+	                i++;
+	            } else if (esOperador(caracter)) {
+	                while (!operadores.isEmpty() && prioridad((Character) operadores.peek()) >= prioridad(caracter)) {
+	                    realizarOperacion(numeros, operadores);
+	                }
+	                operadores.push(caracter);
+	                i++;
+	            } else {
+	                respuesta = -1; // Caracter no válido
+	                break; // Salir del bucle en caso de carácter no válido
+	            }
+	        }
+	    }
 
-        if (numeros.size() == 1 && operadores.isEmpty()) {
-        	 respuesta= (double) numeros.pop();
-        } else {
-        	 respuesta= -1; // Error en la expresión
-        }
-        return respuesta;
-    }
+	    // Verificar si queda algún número al final
+	    if (!numeroActual.isEmpty()) {
+	        numeros.push(Double.parseDouble(numeroActual));
+	    }
+
+	    while (!operadores.isEmpty()) {
+	        if ((Character) operadores.peek() == '(') {
+	            respuesta = -1; // Error en los paréntesis
+	        }
+	        realizarOperacion(numeros, operadores);
+	    }
+
+	    if (numeros.size() == 1 && operadores.isEmpty()) {
+	        respuesta = (double) numeros.pop();
+	    } else {
+	        respuesta = -1; // Error en la expresión
+	    }
+	    
+	    return respuesta;
+	}
 
     public static boolean esOperador(char c) {
         return c == '+' || c == '-' || c == '*' || c == '/';
