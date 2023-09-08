@@ -43,7 +43,7 @@ public class TareaNotacion {
 		}
 
 	public static String obtenerEcuacionInversa(String ecuacion) {
-	    String ecuacionInversaStr = ""; // Usamos una cadena para almacenar la ecuación inversa
+	    String ecuacionInversaStr = ""; 
 
 	    LinkedStack ecuacionInversa = new LinkedStack();
 	    LinkedStack operadores = new LinkedStack();
@@ -94,25 +94,25 @@ public class TareaNotacion {
 	        ecuacionInversaStr += ecuacionInversa.pop() + " ";
 	    }
 
-	    return ecuacionInversaStr; // Devolvemos la cadena directamente sin necesidad de trim()
+	    return ecuacionInversaStr; 
 	}
 	public static double evaluarExpresion(String ecuacion) {
 	    double respuesta = -1;
 	    LinkedStack numeros = new LinkedStack();
 	    LinkedStack operadores = new LinkedStack();
 	    int i = 0;
-	    String numeroActual = ""; // Utilizamos una cadena para construir el número actual
+	    String numeroActual = ""; 
 	    while (i < ecuacion.length()) {
 	        char caracter = ecuacion.charAt(i);
 	        if (Character.isDigit(caracter) || caracter == '.') {
-	            numeroActual += caracter; // Agregamos el carácter al número actual
+	            numeroActual += caracter; 
 	            i++;
 	        } else if (Character.isWhitespace(caracter)) {
 	            i++;
 	        } else {
 	            if (!numeroActual.isEmpty()) {
 	                numeros.push(Double.parseDouble(numeroActual));
-	                numeroActual = ""; // Reiniciamos el número actual
+	                numeroActual = ""; 
 	            }
 	            
 	            if (caracter == '(') {
@@ -135,13 +135,13 @@ public class TareaNotacion {
 	                operadores.push(caracter);
 	                i++;
 	            } else {
-	                respuesta = -1; // Caracter no válido
-	                break; // Salir del bucle en caso de carácter no válido
+	                respuesta = -1; 
+	                break; 
 	            }
 	        }
 	    }
 
-	    // Verificar si queda algún número al final
+	    
 	    if (!numeroActual.isEmpty()) {
 	        numeros.push(Double.parseDouble(numeroActual));
 	    }
@@ -173,7 +173,7 @@ public class TareaNotacion {
         } else if (operador == '*' || operador == '/') {
             prioridad= 2;
         }
-        return prioridad; // Prioridad más baja
+        return prioridad; 
     }
 
     public static void realizarOperacion(LinkedStack numeros, LinkedStack operadores) {
@@ -203,7 +203,7 @@ public class TareaNotacion {
                 if (numero2 != 0) {
                     resultado = numero1 / numero2;
                 } else {
-                    resultado = -1; // División por cero
+                    resultado = -1; 
                 }
                 break;
                     }
