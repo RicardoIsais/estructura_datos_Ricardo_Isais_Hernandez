@@ -107,7 +107,7 @@ public class TareaNotacion {
 	        if (Character.isDigit(caracter) || caracter == '.') {
 	            numeroActual += caracter; 
 	            i++;
-	        } else if (Character.isWhitespace(caracter)) {
+	        } else if (caracter==' ') {
 	            i++;
 	        } else {
 	            if (!numeroActual.isEmpty()) {
