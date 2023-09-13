@@ -21,6 +21,18 @@ public class TareaMaquinaExpendedora {
     	Pilas monedasDiezPesos = new Pilas(30);
     	Pilas monedasCincuentaCentavos = new Pilas(30);
     	Pilas monedasVeintePesos = new Pilas(30);
+    	cocaCola.enqueue(1);
+    	cocaCola.enqueue(1);
+    	fanta.enqueue(1);
+    	fanta.enqueue(1);
+    	galletasOreo.enqueue(1);
+    	galletasOreo.enqueue(1);
+    	jugo.enqueue(1);
+    	jugo.enqueue(1);
+    	snikers.enqueue(1);
+    	snikers.enqueue(1);
+    	sprite.enqueue(1);
+    	sprite.enqueue(1);
     	monedasVeintePesos.push(20.0);
     	monedasVeintePesos.push(20.0);
     	monedasVeintePesos.push(20.0);
