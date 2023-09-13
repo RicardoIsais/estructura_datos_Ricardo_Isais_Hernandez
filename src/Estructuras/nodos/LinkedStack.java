@@ -20,7 +20,7 @@ public class LinkedStack {
 	}
 	public Object peek()
 	{
-		return apuntador.getDato();
+		return null!=apuntador?apuntador.getDato():null;
 	}
 	public void push(Object value) {
 		Nodo nodo=new Nodo();
