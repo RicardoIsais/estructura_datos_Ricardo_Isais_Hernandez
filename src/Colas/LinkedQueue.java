@@ -26,13 +26,14 @@ public class LinkedQueue {
 			Nodo nodo=new Nodo();
 			nodo.setDato(value);;
 			if(null!=r) {
-				nodo.setEnlace(r);
+				r.setEnlace(nodo);
 			}
 			if (null==f) {
-				f=nodo;
+				this.f=nodo;
 			}
-			r=nodo;
-			size++;
+			this.r=nodo;
+			this.size++;
+			
 		}
 		
 		public Object dequeue() {
@@ -43,7 +44,6 @@ public class LinkedQueue {
 				size--;
 			}
 			return value;
-			
 		}
 		
 		public Object front() {
@@ -58,17 +58,9 @@ public class LinkedQueue {
 		    String s = "";
 		    Nodo temporal = r;
 		    while (null!=temporal) {
-		        s = temporal.getDato() + "<-" + s;
+		        s = temporal.getDato() + "->" + s;
 		        temporal = temporal.getEnlace();
 		    }
 		    return s.toString();
 		}
-		
-	
-	
-	
-	
-	
-	
-
 }
