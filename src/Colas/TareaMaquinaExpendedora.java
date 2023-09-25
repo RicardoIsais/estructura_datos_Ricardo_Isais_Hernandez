@@ -691,7 +691,7 @@ public class TareaMaquinaExpendedora {
 								Double cambioProducto=saldo-15;
 								Pilas cambioPila = new Pilas(30);
 
-								while (cambioProducto > 0) {
+								while (cambioProducto >= 0) {
 									if (cambioProducto >= 20.0 && !monedasVeintePesos.isEmpty()) {
 										double moneda = (double) monedasVeintePesos.pop();
 										cambioPila.push(moneda);
