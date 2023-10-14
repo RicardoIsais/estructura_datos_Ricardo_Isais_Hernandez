@@ -6,8 +6,26 @@ import Estructuras.pilas.Pilas;
 import java.util.Scanner;
 public class TareaBanco {
 	public static void main(String[] args) {
-		Scanner leer=new Scanner(System.in);
-		String opcion;
+		System.out.println("Banco");
+	    System.out.println("Menu: \nPresione 1 para salir");
+	    Thread menu = new Thread(new Runnable() {
+	        public void run() {
+	            Scanner scanner = new Scanner(System.in);
+	            String opcion;
+	            while (true) {
+	                opcion = scanner.nextLine();
+	                if (opcion.equals("1")) {
+	                    System.out.println("Fin del programa");
+	                    System.exit(0); 
+	                }
+	            }
+	        }
+	    });
+
+	    menu.start();
+	    cajas();
+	}
+	public static void cajas() {
         FilaHilo hilo = new FilaHilo();
         hilo.start();
         BooleanPriorityQueue cola = hilo.getQueue();
@@ -144,7 +162,7 @@ public class TareaBanco {
             
             
         }
-       
-    }
+		
+	}
 	
 }
