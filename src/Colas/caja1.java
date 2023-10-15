@@ -56,13 +56,13 @@ public class caja1 extends Thread {
 		}
 		try {
 			Random random = new Random();
-			int tiempoAleatorio = random.nextInt(1000000) + 1000;
+			int tiempoAleatorio = random.nextInt(10000) + 1000;
 			Thread.sleep(tiempoAleatorio);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Cliente " + cliente.getNumeroCuenta() + " ha realizado la operación.");
-		mostrarCantidadEnCaja();
+		System.out.println("--Cliente " + cliente.getNumeroCuenta() + " ha realizado la operación.");
+		//mostrarCantidadEnCaja();
 		enOperacion = false;
 	}
 	public boolean estaEnOperacion() {
@@ -70,7 +70,7 @@ public class caja1 extends Thread {
 	}
 	public void toSting() {
 		System.out.println("Estado: "+enOperacion);
-		mostrarCantidadEnCaja();
+		
 		
 		
 	}
@@ -282,7 +282,7 @@ public class caja1 extends Thread {
 	    billete.setBilleteQuinientosPesos(billeteQuinientosPesos);
 	    billete.setBilleteMilPesos(billeteMilPesos);
 	}
-	private void mostrarCantidadEnCaja() {
+	public void mostrarCantidadEnCaja() {
 		System.out.println("Cantidad de monedas en la caja 1:");
 		System.out.println("Monedas de 1 peso: " + monedasUnPeso.size());
 		System.out.println("Monedas de 2 pesos: " + monedasDosPesos.size());

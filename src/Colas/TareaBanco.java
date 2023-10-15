@@ -7,28 +7,8 @@ import java.util.Scanner;
 public class TareaBanco {
 	public static void main(String[] args) {
 		System.out.println("Banco");
-	    System.out.println("Menu: \nPresione 1 para salir");
-	    Thread menu = new Thread(new Runnable() {
-	        public void run() {
-	            Scanner scanner = new Scanner(System.in);
-	            String opcion;
-	            while (true) {
-	                opcion = scanner.nextLine();
-	                if (opcion.equals("1")) {
-	                    System.out.println("Fin del programa");
-	                    System.exit(0); 
-	                }
-	            }
-	        }
-	    });
+	    System.out.println("Menu: \nPresione 1 para salir \nPresione 2 para ver el estado del banco");
 
-	    menu.start();
-	    cajas();
-	}
-	public static void cajas() {
-        FilaHilo hilo = new FilaHilo();
-        hilo.start();
-        BooleanPriorityQueue cola = hilo.getQueue();
         Pilas monedasUnPesoCaja1 = new Pilas(100);
         Pilas monedasDosPesosCaja1 = new Pilas(100);
         Pilas monedasCincoPesosCaja1 = new Pilas(100);
@@ -95,74 +75,89 @@ public class TareaBanco {
         
         
         
-     
+        FilaHilo hilo = new FilaHilo();
+        hilo.start();
+        BooleanPriorityQueue cola = hilo.getQueue();
+	    Thread menu = new Thread(new Runnable() {
+	        public void run() {
+	            Scanner scanner = new Scanner(System.in);
+	            String opcion;
+	            while (true) {
+	                opcion = scanner.nextLine();
+	                if (opcion.equals("1")) {
+	                	
+	                    System.out.println("Fin del programa");
+	                    System.exit(0); 
+	                }
+	                else if (opcion.equals("2")) {
+	                	System.out.println("Informacion del banco:");
+	                    String filaClientesEnEspera = hilo.getFilaClientesEnEspera();
+	                    System.out.println("Fila de clientes en espera:");
+	                    System.out.println(filaClientesEnEspera);
+	                    if (!caja.estaEnOperacion()) {
+                            System.out.println("Caja 1 está ocupada.");
+                        } else {
+                            System.out.println("Caja 1 no está ocupada.");
+                            }
+	                    if (!caja2.estaEnOperacion()) {
+                            System.out.println("Caja 2 está ocupada.");
+                        } else {
+                            System.out.println("Caja 2 no está ocupada.");
+                            }
+	                    if (!caja3.estaEnOperacion()) {
+                            System.out.println("Caja 3 está ocupada.");
+                        } else {
+                            System.out.println("Caja 3 no está ocupada.");
+                            }
+	                    if (!caja4.estaEnOperacion()) {
+                            System.out.println("Caja 4 está ocupada.");
+                        } else {
+                            System.out.println("Caja 4 no está ocupada.");
+                            }
+	                    caja.mostrarCantidadEnCaja();
+	                    caja2.mostrarCantidadEnCaja();
+	                    caja3.mostrarCantidadEnCaja();
+	                    caja4.mostrarCantidadEnCaja();
+	                    
+	                }
+	                
 
 
+	                
+	            }
+	        }
+	    });
 
-
-       
-        
-        
-
-        while (true) {
-        	
-            if (!cola.isEmpty()) {
-
-
-                Cliente cliente = (Cliente) cola.dequeue();
-
-                if (!caja.estaEnOperacion()) {
-                    while (caja.estaEnOperacion()) {
-                        
-                    }
-
-                    caja = new caja1(cliente, billete);
-                    caja.start();
-                    
-                }
-                else if (!caja2.estaEnOperacion()) {
-                    while (caja2.estaEnOperacion()) {
-                       
-                    }
-
-                    caja2 = new caja2(cliente, billeteCaja2);
-                    caja2.start();
-                }
-                else if (!caja3.estaEnOperacion()) {
-                    while (caja3.estaEnOperacion()) {
-                        
-                    }
-
-                    caja3 = new caja3(cliente, billeteCaja3);
-                    caja3.start();
-                }
-                else if (!caja4.estaEnOperacion()) {
-                    while (caja4.estaEnOperacion()) {
-                       
-                    }
-
-                    caja4 = new caja4(cliente, billeteCaja4);
-                    caja4.start();   
-                } 
-               
-            }
-
-            try {
-            	
-                Random random = new Random();
-                int tiempoAleatorio = random.nextInt(50) + 1000; // Tiempo aleatorio entre 1 y 5 segundos
-                Thread.sleep(tiempoAleatorio);
-            } catch (InterruptedException e) {
-                
-
-        }
-            
-
-
-            
-            
-        }
-		
+	    menu.start();
+	    cajas(cola,caja,caja2,caja3,caja4,billete,billeteCaja2,billeteCaja3,billeteCaja4);
 	}
-	
+	public static void cajas(BooleanPriorityQueue cola, caja1 caja, caja2 caja2, caja3 caja3, caja4 caja4, Billetes billete, BilletesCaja2 billeteCaja2, BilletesCaja3 billeteCaja3, BilletesCaja4 billeteCaja4) {
+	    while (true) {
+	        if (!cola.isEmpty()) {
+	            Cliente cliente = (Cliente) cola.dequeue();
+                
+	            if (!caja.estaEnOperacion()) {
+	                caja = new caja1(cliente, billete);
+	                caja.start();
+	            } else if (!caja2.estaEnOperacion()) {
+	                caja2 = new caja2(cliente, billeteCaja2);
+	                caja2.start();
+	            } else if (!caja3.estaEnOperacion()) {
+	                caja3 = new caja3(cliente, billeteCaja3);
+	                caja3.start();
+	            } else if (!caja4.estaEnOperacion()) {
+	                caja4 = new caja4(cliente, billeteCaja4);
+	                caja4.start();
+	            }
+	        }
+
+	        try {
+	            Random random = new Random();
+	            int tiempoAleatorio = random.nextInt(10)+1000; 
+	            Thread.sleep(tiempoAleatorio);
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	}
 }

@@ -60,8 +60,8 @@ public class caja2 extends Thread {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Cliente " + cliente.getNumeroCuenta() + " ha realizado la operación.");
-		mostrarCantidadEnCaja();
+		System.out.println("--Cliente " + cliente.getNumeroCuenta() + " ha realizado la operación.");
+		
 		enOperacion = false;
 	}
 	public boolean estaEnOperacion() {
@@ -107,7 +107,7 @@ public class caja2 extends Thread {
 			} else if (valorMoneda == 1000.0) {
 				billeteMilPesos.push(valorMoneda);
 			}
-			// Agrega casos para otras pilas si es necesario
+			
 		}
 		billete.setMonedasUnPeso(monedasUnPeso);
 		billete.setMonedasDosPesos(monedasDosPesos);
@@ -258,8 +258,7 @@ public class caja2 extends Thread {
 	            double moneda = (double) monedasUnPeso.pop();
 	            monto -= moneda;
 	        } else {
-	            // La pila está vacía, por lo que necesitas llenarla aquí.
-	            // Llena la pila según tu lógica para agregar billetes o monedas.
+
 	            break;
 	        }
 	    }
@@ -275,7 +274,7 @@ public class caja2 extends Thread {
 	    billete.setBilleteQuinientosPesos(billeteQuinientosPesos);
 	    billete.setBilleteMilPesos(billeteMilPesos);
 	}
-	private void mostrarCantidadEnCaja() {
+	public void mostrarCantidadEnCaja() {
 		System.out.println("Cantidad de monedas en la caja 2:");
 		System.out.println("Monedas de 1 peso: " + monedasUnPeso.size());
 		System.out.println("Monedas de 2 pesos: " + monedasDosPesos.size());

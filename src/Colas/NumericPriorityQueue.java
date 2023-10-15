@@ -68,13 +68,13 @@ public class NumericPriorityQueue {
 		return null!=r?r.getDato():null;
 	}
 	public String toString() {
-		String s = "";
-		NumericNodo temporal = r;
-		while (null!=temporal) {
-			s = temporal.getDato() + "->" + s;
-			temporal = temporal.getEnlace();
-		}
-		return s.toString();
+	    String s = "";
+	    NumericNodo temporal = f; 
+	    while (null != temporal) {
+	        s = s + temporal.getDato() + "->";
+	        temporal = temporal.getEnlace();
+	    }
+	    return s.isEmpty() ? "La cola está vacía." : s.substring(0, s.length() - 2); 
 	}
 
 }
