@@ -44,16 +44,29 @@ public class ArrayList {
 		list=temp;		
 	}
 	
-	public void set (Integer a, Object i) {
+	public void set (Integer index, Object value)throws Exception {
+		if (index<=0 && index>size) {
+			throw new Exception("Error: Fuera de rango");
+		}
+		list[index]=value;
 
 	}
-	public Object  get(Integer a) {
-		Object b=8;
-		return b;
+	public Object  get(Integer index) throws Exception {
+		try {
+			return list[index];
+		}catch(Exception e) {
+			   e.printStackTrace();     //throw e;			
+		}
+		return null;
 	}
-	public Object  remove(Integer a) {
-		Object b=8;
-		return b;
+	public Object  remove(Integer index) { //Borra
+		Object value=list[index];
+		for(int i=0;i>index;i++) {
+			list[index]=list[index+1];
+		}
+		list[size-1]=null;
+		size--;
+		return value; 
 	}
 	public int size() {
 
@@ -61,6 +74,15 @@ public class ArrayList {
 	}
 	public  boolean isEmpty() {
 		return size==0;             
+	}
+	public String toString()
+	{
+		StringBuilder s=new StringBuilder();
+		for(int i=0;i<size;i++)
+		{
+			s.append(list[i]).append("->");
+		}
+		return s.toString();
 	}
 	
 

@@ -153,7 +153,7 @@ public class TareaBanco {
 
 	        try {
 	            Random random = new Random();
-	            int tiempoAleatorio = random.nextInt(10)+1000; 
+	            int tiempoAleatorio = random.nextInt(10); 
 	            Thread.sleep(tiempoAleatorio);
 	        } catch (InterruptedException e) {
 	            e.printStackTrace();

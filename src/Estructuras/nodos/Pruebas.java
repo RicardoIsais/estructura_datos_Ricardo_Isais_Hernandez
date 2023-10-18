@@ -1,22 +1,13 @@
 package Estructuras.nodos;
-import Colas.LinkedQueue;
+import ArrayList.ArrayList;
+
 
 public class Pruebas {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception{
 		// TODO Auto-generated method stub
-		LinkedQueue circulo = new LinkedQueue();
-		circulo.enqueue(1);
-		System.out.print(circulo.front());
-		circulo.enqueue(2);
-		System.out.print(circulo.front());
-		circulo.enqueue(3);
-		System.out.print(circulo.front());
-		circulo.dequeue();
-		System.out.print(circulo.front());
-		circulo.dequeue();
-		System.out.print(circulo.front());
 		
+
 
 	}
 
