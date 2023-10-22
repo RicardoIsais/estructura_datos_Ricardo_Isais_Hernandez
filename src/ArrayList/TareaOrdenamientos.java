@@ -25,7 +25,13 @@ public class TareaOrdenamientos {
                 System.out.print(numeroAleatorio + " ");
             }
             
-            ordenacionQuickSort(arregloEnteros);
+            //ordenacionQuicksort(arregloEnteros, 0, arregloEnteros.size() - 1);
+            //System.out.println("\nVector ordenado de menor a mayor");
+            //imprimirArreglo(arregloEnteros);
+            //ordenacionShellSort(arregloEnteros);
+            //System.out.println("\nVector ordenado de menor a mayor");
+            //imprimirArreglo(arregloEnteros);
+            ordenacionSeleccion(arregloEnteros);
             System.out.println("\nVector ordenado de menor a mayor");
             imprimirArreglo(arregloEnteros);
         }
@@ -35,53 +41,69 @@ public class TareaOrdenamientos {
         }
     }
 
-    public static void ordenacionQuickSort(ArrayList lista) {
-        int[] arregloEntero = new int[lista.size()];
-        for (int i = 0; i < lista.size(); i++) {
-        	arregloEntero[i] =(int) lista.get(i);
+    public static void ordenacionQuicksort(ArrayList<Integer> lista, int izquierda, int derecha) {
+        if (izquierda >= derecha) {
+            return;
         }
-        quickSort(arregloEntero, 0, arregloEntero.length - 1);
-        for (int i = lista.size() - 1; i >= 0; i--) {
-            lista.remove(i);
-        }
-        for (int i : arregloEntero) {
-            lista.add(i);
-        }
-    }
-
-    public static void quickSort(int[] vec, int inicio, int fin) {
-        if (inicio < fin ) {
-            int pivoteIndex = division(vec, inicio, fin);
-            quickSort(vec, inicio, pivoteIndex - 1);
-            quickSort(vec, pivoteIndex + 1, fin);
-        }
-    }
-
-    public static int division(int[] vec, int inicio, int fin) {
-        int pivote = vec[fin];
-        int i = inicio - 1;
-
-        for (int j = inicio; j < fin; j++) {
-            if (vec[j] < pivote) {
+        int pivote = lista.get(izquierda);  //Iniciar con el primer elemento de la lista como pivote
+        int i = izquierda;
+        int j = derecha;
+        while (i < j) {
+            while (lista.get(i) <= pivote && i < j) {
                 i++;
-                int temp = vec[i];
-                vec[i] = vec[j];
-                vec[j] = temp;
+            }
+            while (lista.get(j) > pivote) {
+                j--;
+            }
+            if (i < j) {
+                int aux = lista.get(i);
+                lista.set(i, lista.get(j));
+                lista.set(j, aux);
             }
         }
-
-        
-        int temp = vec[i + 1];
-        vec[i + 1] = vec[fin];
-        vec[fin] = temp;
-
-        return i + 1;
+        lista.set(izquierda, lista.get(j));
+        lista.set(j, pivote);
+        ordenacionQuicksort(lista, izquierda, j - 1);
+        ordenacionQuicksort(lista, j + 1, derecha);
     }
-
-
     public static void imprimirArreglo(ArrayList lista) {
         for (int i = 0; i < lista.size(); i++) {
             System.out.print(lista.get(i) + " ");
         }
     }
+
+    public static void ordenacionShellSort(ArrayList lista) {
+        int intervalo = lista.size() / 2;
+
+        while (intervalo > 0) {
+            for (int i = intervalo; i < lista.size(); i = i + 1) {
+                int elemento = (int) lista.get(i);
+                int j = i;
+                while (j >= intervalo && (int) lista.get(j - intervalo) > elemento) {
+                    lista.set(j, lista.get(j - intervalo));
+                    j = j - intervalo;
+                }
+                lista.set(j, elemento);
+            }
+            intervalo = intervalo / 2; 
+        }
+    }
+    public static void ordenacionSeleccion(ArrayList lista) {
+        for (int i = 0; i < lista.size() - 1; i++) {
+            int minimo = i;
+            int temp=0;
+            for (int j = i + 1; j < lista.size(); j++) {
+                if ((int) lista.get(j) < (int) lista.get(minimo)) {
+                    minimo = j;
+                }
+            }
+            temp =(int) lista.get(i);
+            lista.set(i, lista.get(minimo));
+            lista.set(minimo, temp);
+        }
+    }
+
+
+     
+    
 }
