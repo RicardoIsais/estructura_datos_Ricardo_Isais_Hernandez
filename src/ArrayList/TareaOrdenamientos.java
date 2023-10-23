@@ -25,15 +25,15 @@ public class TareaOrdenamientos {
                 System.out.print(numeroAleatorio + " ");
             }
             
-            //ordenacionQuicksort(arregloEnteros, 0, arregloEnteros.size() - 1);
-            //System.out.println("\nVector ordenado de menor a mayor");
-            //imprimirArreglo(arregloEnteros);
+            ordenacionQuicksort(arregloEnteros, 0, arregloEnteros.size() - 1);
+            System.out.println("\nVector ordenado de menor a mayor");
+            imprimirArreglo(arregloEnteros);
             //ordenacionShellSort(arregloEnteros);
             //System.out.println("\nVector ordenado de menor a mayor");
             //imprimirArreglo(arregloEnteros);
-            ordenacionSeleccion(arregloEnteros);
-            System.out.println("\nVector ordenado de menor a mayor");
-            imprimirArreglo(arregloEnteros);
+            //ordenacionSeleccion(arregloEnteros);
+            //System.out.println("\nVector ordenado de menor a mayor");
+            //imprimirArreglo(arregloEnteros);
         }
         else
         {
@@ -41,22 +41,22 @@ public class TareaOrdenamientos {
         }
     }
 
-    public static void ordenacionQuicksort(ArrayList<Integer> lista, int izquierda, int derecha) {
+    public static void ordenacionQuicksort(ArrayList lista, int izquierda, int derecha) {
         if (izquierda >= derecha) {
             return;
         }
-        int pivote = lista.get(izquierda);  //Iniciar con el primer elemento de la lista como pivote
+        int pivote =(int) lista.get(izquierda);  //Iniciar con el primer elemento de la lista como pivote
         int i = izquierda;
         int j = derecha;
         while (i < j) {
-            while (lista.get(i) <= pivote && i < j) {
+            while ((int)lista.get(i) <= pivote && i < j) {
                 i++;
             }
-            while (lista.get(j) > pivote) {
+            while ((int)lista.get(j) > pivote) {
                 j--;
             }
             if (i < j) {
-                int aux = lista.get(i);
+                int aux =(int) lista.get(i);
                 lista.set(i, lista.get(j));
                 lista.set(j, aux);
             }
