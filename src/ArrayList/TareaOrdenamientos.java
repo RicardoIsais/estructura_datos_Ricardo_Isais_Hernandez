@@ -1,15 +1,14 @@
 package ArrayList;
-import java.util.ArrayList;
+import ArrayList.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
 public class TareaOrdenamientos {
 
-    public static void main(String[] args) {
+    public static void main(String[] args)throws Exception {
         Scanner leer = new Scanner(System.in);
         String cantidad;
         int cantidadNumero;
-        
         System.out.print("Agregar la cantidad de numeros: ");
         cantidad = leer.nextLine();
         cantidadNumero = Integer.parseInt(cantidad);
@@ -25,15 +24,15 @@ public class TareaOrdenamientos {
                 System.out.print(numeroAleatorio + " ");
             }
             
-            ordenacionQuicksort(arregloEnteros, 0, arregloEnteros.size() - 1);
-            System.out.println("\nVector ordenado de menor a mayor");
-            imprimirArreglo(arregloEnteros);
+            //ordenacionQuicksort(arregloEnteros, 0, arregloEnteros.size() - 1);
+            //System.out.println("\nVector ordenado de menor a mayor");
+            //imprimirArreglo(arregloEnteros);
             //ordenacionShellSort(arregloEnteros);
             //System.out.println("\nVector ordenado de menor a mayor");
             //imprimirArreglo(arregloEnteros);
-            //ordenacionSeleccion(arregloEnteros);
-            //System.out.println("\nVector ordenado de menor a mayor");
-            //imprimirArreglo(arregloEnteros);
+            ordenacionSeleccion(arregloEnteros);
+            System.out.println("\nVector ordenado de menor a mayor");
+            imprimirArreglo(arregloEnteros);
         }
         else
         {
@@ -41,11 +40,11 @@ public class TareaOrdenamientos {
         }
     }
 
-    public static void ordenacionQuicksort(ArrayList lista, int izquierda, int derecha) {
+    public static void ordenacionQuicksort (ArrayList lista, int izquierda, int derecha)throws Exception {
         if (izquierda >= derecha) {
             return;
         }
-        int pivote =(int) lista.get(izquierda);  //Iniciar con el primer elemento de la lista como pivote
+        int pivote =(int)lista.get(izquierda);  //Iniciar con el primer elemento de la lista como pivote
         int i = izquierda;
         int j = derecha;
         while (i < j) {
@@ -66,13 +65,13 @@ public class TareaOrdenamientos {
         ordenacionQuicksort(lista, izquierda, j - 1);
         ordenacionQuicksort(lista, j + 1, derecha);
     }
-    public static void imprimirArreglo(ArrayList lista) {
+    public static void imprimirArreglo(ArrayList lista)throws Exception {
         for (int i = 0; i < lista.size(); i++) {
             System.out.print(lista.get(i) + " ");
         }
     }
 
-    public static void ordenacionShellSort(ArrayList lista) {
+    public static void ordenacionShellSort(ArrayList lista)throws Exception {
         int intervalo = lista.size() / 2;
 
         while (intervalo > 0) {
@@ -88,7 +87,7 @@ public class TareaOrdenamientos {
             intervalo = intervalo / 2; 
         }
     }
-    public static void ordenacionSeleccion(ArrayList lista) {
+    public static void ordenacionSeleccion(ArrayList lista) throws Exception{
         for (int i = 0; i < lista.size() - 1; i++) {
             int minimo = i;
             int temp=0;
