@@ -43,14 +43,6 @@ public class Examen {
 			colaNumeros2.enqueue(numeroAleatorio);
 		}
 		System.out.println("contador de numeros 25: "+numeros25(colaNumeros2));
-
-		
-		
-		
-		
-        
-        
-
 	}
 	
 	public static void sumarNumerosAleatorios() {
@@ -96,7 +88,6 @@ public class Examen {
     }
 	public static void realizarOperaciones(Pilas pila) {
         int resultado = 0;
-
         if (pila.size() >= 2) {
             int numero1 = (int)pila.pop();
             int numero2 = (int)pila.pop();
@@ -111,14 +102,12 @@ public class Examen {
             resultado -= (int) pila.peek();
             pila.pop();
         }
-
         System.out.println("resultado final: "+resultado);
     }
 	public static int[] numerosNoRepetidos(CircularQueue cola) {
 		int[] arreglo = new int[50];
 		int[] lista = new int[50];
 		int contador = 0;
-
 		for (int i = 0; i < cola.size(); i++) {
 			int numero = (int) cola.dequeue();
 
@@ -139,15 +128,12 @@ public class Examen {
 				cola.enqueue(numero);
 			}
 		}
-
-
 		int[] numerosNoRepetidos = new int[contador];
 		System.arraycopy(lista, 0, numerosNoRepetidos, 0, contador);
 		return numerosNoRepetidos;
 	}
 	public static int numeros25(CircularQueue cola) {
 		int contador=0;
-		
 		for (int i = 0; i < cola.size(); i++) {
 			int numero=(int)cola.dequeue();
 			if (numero==25) {
@@ -162,11 +148,6 @@ public class Examen {
 			}
 			
 		}
-		
-		
-		return contador;
-		
+		return contador;	
 	}
-
-
 }
