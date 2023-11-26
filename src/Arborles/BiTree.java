@@ -41,5 +41,18 @@ public class BiTree {
 		}
 		
 	}
+	public void preorden() {
+		preorden(r);
+	}
+	private void preorden (NumericNodoArbol nodo) {
+		if(null==nodo) {
+			return;
+		}
+		System.out.print(nodo.getDato());
+		preorden(nodo.getIzquierda());
+		preorden(nodo.getDerecha());
+
+		
+	}
 
 }
