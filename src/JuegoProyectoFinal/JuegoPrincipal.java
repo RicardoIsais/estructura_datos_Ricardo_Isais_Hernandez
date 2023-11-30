@@ -1,5 +1,6 @@
 package JuegoProyectoFinal;
 import java.util.Scanner;
+import java.util.ArrayList;
 import java.util.Random;
 import Estructuras.pilas.Pilas;
 import JuegoProyectoFinal.BarajaDeCartas;
@@ -8,8 +9,9 @@ import java.util.Scanner;
 public class JuegoPrincipal {
 
 	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
 		System.out.println("JUEGO DEL UNO, ¡BIENVENIDO!");
-		boolean seguirJugando=true;
+		System.out.println("Instrucciones: "+"\r\n"+"Desarrollo del Juego:\r\n" + "Se elige una carta inicial del mazo mezclado, asegurándose de que no sea una carta especial como \"+4\", \"Cambio de color\", \"Saltar\", \"Reversa\" o \"+2\".\r\n" + "Los jugadores alternan turnos.\r\n"+ "En cada turno, el jugador debe coincidir con la carta en juego por valor o color.\r\n"+ "Si un jugador no puede jugar una carta válida, debe tomar una carta del mazo.\r\n" + "Cartas Especiales:\r\n" + "\"+4\": El jugador elige un nuevo color y el siguiente jugador toma 4 cartas.\r\n" + "\"Cambio de color\": El jugador elige un nuevo color.\r\n" + "\"Saltar\": Cambia el sentido del juego si se juega en una carta del mismo color.\r\n" + "\"+2\": El siguiente jugador toma 2 cartas. Se puede apilar con otra carta \"+2\".\r\n"+ "Fin del Juego:\r\n"+ "El juego continúa hasta que un jugador se queda sin cartas.\r\n"+ "El jugador que se queda sin cartas primero gana.\r\n"+ "Se muestra un mensaje indicando qué jugador ganó.\r\n"+ "Turnos y Estado del Juego:\r\n"+ "Se muestra el estado actual del juego, incluida la carta en juego y las cartas de cada jugador.\r\n"+ "Los jugadores reciben mensajes sobre sus turnos y acciones permitidas.\r\n"+ "UNO y Toma de Decisiones:\r\n"+ "Los jugadores pueden decir \"¡Uno!\" cuando les queda una carta.\r\n"+ "Si no dicen \"¡Uno!\" antes de que el siguiente jugador comience su turno, deben tomar dos cartas."+ "\n¡Disfruta del juego!\r\n");
 		BarajaDeCartas baraja = new BarajaDeCartas();
 		Pilas mazoCartasTotal = baraja.mazoDeCartas();
 		Pilas mazoMezclado = baraja.mezclarMazo(mazoCartasTotal);
@@ -24,7 +26,7 @@ public class JuegoPrincipal {
 		Carta cartaInicial = null;
 		Carta cartaJuego = null;
 		boolean cartaInicialAceptada = true;
-		boolean turnoJugador1 = true;
+		int turnoJugador1 = 1;
 		while (cartaInicialAceptada) {
 			Carta carta = (Carta) mazoMezclado.pop();
 			if (!carta.getValor().equals("+4") && !carta.getValor().equals("Cambio de color")
@@ -35,39 +37,150 @@ public class JuegoPrincipal {
 			}
 			mazoMezclado.push(carta);
 		}
-
 		while (true) {
 			cartaJuego=cartaInicial;
+			if (contarCartas(mazoJugador1Arreglo)==0) {
+				System.out.println("Gano el jugador 1");
+				break;
+			}
+			if (contarCartas(mazoJugador2Arreglo)==0) {
+				System.out.println("Gano el jugador 2");
+				break;
+			}
+			System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 			System.out.println("Carta Actual: ");
 			System.out.println(cartaJuego.getValor() + " " + cartaJuego.getColor());
-			if (contarCartas(mazoJugador1Arreglo) == 0) {
-				System.out.println("¡Jugador 1 ha ganado!\n Fin del juego :)");
-				break;
-			} else if (contarCartas(mazoJugador2Arreglo) == 0) {
-				System.out.println("¡Jugador 2 ha ganado!\n Fin del juego :)");
-				break;
-			}
-			if (turnoJugador1) {
-				System.out.println("Turno del Jugador 1:");
-				cartaInicial = jugarTurno(mazoJugador1Arreglo, mazoMezclado, cartaInicial, mazoJugador2Arreglo, cartaJuego);
-				if (cartaInicial.getValor().equals("Saltar") ) {
-					turnoJugador1=true;
-				} else {
-					turnoJugador1 = !turnoJugador1;
+			
+			if (turnoJugador1 == 1) {
+			    System.out.println("Turno del Jugador 1:");
+			    cartaInicial = jugarTurno(mazoJugador1Arreglo, mazoMezclado, cartaInicial, mazoJugador2Arreglo, cartaJuego);
 
-				}
-
+			    if (cartaInicial.getValor().equals("Saltar")) {
+			        turnoJugador1 = 1;
+			    } else {
+			        turnoJugador1 = 2;
+			    }
+			    if (contarCartas(mazoJugador1Arreglo)==2 || contarCartas(mazoJugador1Arreglo)==1) {
+				    boolean seleccionValida = false;
+				    do {
+				        System.out.println("Total de cartas: " + contarCartas(mazoJugador1Arreglo));
+				        System.out.println("¿Tienes una carta?  1)Si 2)No");
+				        String seleccionUnoCadena = scanner.nextLine();
+				        if (!seleccionUnoCadena.isEmpty() && validarEntero(seleccionUnoCadena)) {
+				            int seleccion = Integer.parseInt(seleccionUnoCadena);
+				            if (seleccion == 1) {
+				                System.out.println("¡Uno!");
+				                if (contarCartas(mazoJugador1Arreglo) == 1) {
+				                	seleccionValida = true;
+				                    System.out.println("¡Bien, ya casi ganas!");
+				                    break; 
+				                } else {
+				                    System.out.println("No tienes una carta para decir uno, se te agregarán +2 cartas ");
+				                    for (int i = 0; i < 2; i++) {
+				                        Carta cartaTomada = (Carta) mazoMezclado.pop();
+				                        for (int j = 0; j < mazoJugador1Arreglo.length; j++) {
+				                            if (mazoJugador1Arreglo[j] == null) {
+				                                mazoJugador1Arreglo[j] = cartaTomada;
+				                                System.out.println("Carta agregada: " + cartaTomada.getValor() + " " + cartaTomada.getColor());
+				                                seleccionValida = true;
+				                                break;
+				                            }
+				                        }
+				                    }
+				                }
+				            } else if (seleccion == 2) {
+				                if (contarCartas(mazoJugador1Arreglo) == 1) {
+				                    System.out.println("¡Bien, ya casi ganas!, si tienes uno");
+				                    seleccionValida = true;
+				                    break; 
+				                } else {
+				                	System.out.println("¡Vamos, falta poco!");
+				                	seleccionValida = true;
+				                    break;
+				                }
+				            } else {
+				                System.out.println("Por favor, ingresa un número válido del 1 al 2");
+				                
+				                
+				            }
+				        } else {
+				            System.out.println("Por favor, ingresa un número válido");
+				            
+				        }
+				        if (contarCartas(mazoJugador1Arreglo) == 0) {
+							System.out.println("¡Jugador 1 ha ganado!\n Fin del juego :)");
+							break;
+						} else if (contarCartas(mazoJugador2Arreglo) == 0) {
+							System.out.println("¡Jugador 2 ha ganado!\n Fin del juego :)");
+							break;
+						}
+				    } while (!seleccionValida);
+			    	
+			    }
 			} else {
-				System.out.println("Turno del Jugador 2:");
-				cartaInicial = jugarTurno(mazoJugador2Arreglo, mazoMezclado, cartaInicial, mazoJugador1Arreglo, cartaJuego);
-				if (cartaInicial.getValor().equals("Saltar")) {
-					turnoJugador1=true;
-				} else {
-					turnoJugador1 = !turnoJugador1;
+				if(turnoJugador1==2) {
+					System.out.println("Turno del Jugador 2:");
+					cartaInicial = jugarTurno(mazoJugador2Arreglo, mazoMezclado, cartaInicial, mazoJugador1Arreglo, cartaJuego);
+					if (cartaInicial.getValor().equals("Saltar")) {
+						turnoJugador1=2;
+					} else {
+						turnoJugador1 =1;
+					}
+				    if (contarCartas(mazoJugador2Arreglo)==2 || contarCartas(mazoJugador2Arreglo)==1) {
+					    boolean seleccionValida = false;
+					    do {
+					        System.out.println("Total de cartas: " + contarCartas(mazoJugador2Arreglo));
+					        System.out.println("¿Tienes una carta?  1)Si 2)No");
+					        String seleccionUnoCadena = scanner.nextLine();
+					        if (!seleccionUnoCadena.isEmpty() && validarEntero(seleccionUnoCadena)) {
+					            int seleccion = Integer.parseInt(seleccionUnoCadena);
+					            if (seleccion == 1) {
+					                System.out.println("¡Uno!");
+					                if (contarCartas(mazoJugador2Arreglo) == 1) {
+					                	seleccionValida = true;
+					                    System.out.println("¡Bien, ya casi ganas!");
+					                    break; 
+					                } else {
+					                    System.out.println("No tienes una carta para decir uno, se te agregarán +2 cartas ");
+					                    for (int i = 0; i < 2; i++) {
+					                        Carta cartaTomada = (Carta) mazoMezclado.pop();
+					                        for (int j = 0; j < mazoJugador2Arreglo.length; j++) {
+					                            if (mazoJugador2Arreglo[j] == null) {
+					                                mazoJugador2Arreglo[j] = cartaTomada;
+					                                System.out.println("Carta agregada: " + cartaTomada.getValor() + " " + cartaTomada.getColor());
+					                                seleccionValida = true;
+					                                break;
+					                            }
+					                        }
+					                    }
+					                }
+					            } else if (seleccion == 2) {
+					                if (contarCartas(mazoJugador2Arreglo) == 1) {
+					                    System.out.println("¡Bien, ya casi ganas!, si tienes uno");
+					                    seleccionValida = true;
+					                    break; 
+					                } else {
+					                	System.out.println("¡Vamos, falta poco!");
+					                	seleccionValida = true;
+					                    break;
+					                }
+					            } else {
+					                System.out.println("Por favor, ingresa un número válido del 1 al 2");
+					                
+					                
+					            }
+					        } else {
+					            System.out.println("Por favor, ingresa un número válido");
+					            
+					        }
+					    } while (!seleccionValida);
+				    	
+				    }
 
+					
 				}
 			}
-
+			boolean cartas=false;			
 		}
 	}
 	public static int contarCartas(Object[] arreglo) {
@@ -79,7 +192,6 @@ public class JuegoPrincipal {
 		}
 		return contador;
 	}
-
 	public static boolean validarEntero(String valor) {
 		boolean respuesta;
 		try {
@@ -103,48 +215,31 @@ public class JuegoPrincipal {
 							+ mazoJugadorArreglo[i].getColor());
 				}
 			}
-			System.out.println("Seleccione una carta para jugar (0-" + (contarCartas(mazoJugadorArreglo) - 1) + ") o -1 para tomar una carta o -2 si solamente te falta tirar una carta: ");
+			int[] indicesConCartas = obtenerIndicesConCartas(mazoJugadorArreglo);
+			if (indicesConCartas.length > 0) {
+				System.out.print("Índices de las cartas: ");
+				for (int i = 0; i < indicesConCartas.length - 1; i++) {
+					System.out.print(indicesConCartas[i] + ", ");
+				}
+				System.out.println(indicesConCartas[indicesConCartas.length - 1]);
+			} else {
+				System.out.println("No hay cartas en el arreglo.");
+			}
+			System.out.println("Seleccione una carta de los indices de arriba para jugar o -1 para tomar una carta:");
 			String seleccionCadena = scanner.nextLine();
-
 			if (!seleccionCadena.isEmpty() && validarEntero(seleccionCadena)==true) {
 				seleccion = Integer.parseInt(seleccionCadena);
-				if (seleccion==-1 || seleccion==-2 || seleccion >= 0 && seleccion <= contarCartas(mazoJugadorArreglo) ) {	            	
+				if (seleccion==-1 || seleccion >= 0 && seleccion <=104 && !verificarSiEsNulo(seleccion,mazoJugadorArreglo)) {	            	
 				}
 				else {
 					System.out.println("Por favor, ingresa un número válido o -1 para tomar una carta.");
 					continue; 
 				}
-
 			} else {
 				System.out.println("Por favor, ingresa un número válido o -1 para tomar una carta.");
 				continue; 
 			}
-			//Validar cuando ya no tenga que cartas sacar , si la pila se queda vacia
-			if(seleccion==-2) {
-				System.out.println("¡Uno!");
-				if (contarCartas(mazoJugadorArreglo)==1) {
-					System.out.println("Bien,¡Ya casi ganas!");
-					uno=true;
-					seleccionValida = true;
-				}
-				else
-				{
-					System.out.println("No tienes uno, se te agregaran +2 cartas ");
-					for (int i = 0; i < 2; i++) {
-						Carta cartaTomada = (Carta) mazoMezclado.pop();
-						for (int j = 0; j < mazoJugadorArreglo.length; j++) {
-							if (mazoJugadorArreglo[j] == null) {
-								mazoJugadorArreglo[j] = cartaTomada;
-								System.out.println("Carta agregadas: " + cartaTomada.getValor() + " " + cartaTomada.getColor());
-								break;
-							}
-						}
-					}
-					seleccionValida = true;
-					cartaJuego = cartaInicial;
-				}
-			}
-			else if (seleccion == -1) {
+			if (seleccion == -1) {
 				Carta cartaTomada1 = (Carta) mazoMezclado.pop();
 				for (int i = 0; i < mazoJugadorArreglo.length; i++) {
 					if (mazoJugadorArreglo[i] == null) {
@@ -168,9 +263,9 @@ public class JuegoPrincipal {
 					}else
 					{
 						System.out.println("No es un numero, color aleatorio");
-			            Random random = new Random();
-			            opcionColor = random.nextInt(4) + 1;
-						
+						Random random = new Random();
+						opcionColor = random.nextInt(4) + 1;
+
 					}
 					switch (opcionColor) {
 					case 1:
@@ -203,8 +298,8 @@ public class JuegoPrincipal {
 						break;
 					default:
 						System.out.println("Opción no válida. color aleatorio");
-			            Random random = new Random();
-			            opcionColor = random.nextInt(4) + 1;
+						Random random = new Random();
+						opcionColor = random.nextInt(4) + 1;
 						switch (opcionColor) {
 						case 1:
 							System.out.println("Rojo");
@@ -235,7 +330,7 @@ public class JuegoPrincipal {
 							cartaJuego=cartaInicial;
 							break;
 						}
-	
+
 					}
 					for (int i = 0; i < 4; i++) {
 						Carta cartaTomada2 = (Carta) mazoMezclado.pop();
@@ -261,9 +356,9 @@ public class JuegoPrincipal {
 					}else
 					{
 						System.out.println("No es un numero, color aleatorio");
-			            Random random = new Random();
-			            opcionColor = random.nextInt(4) + 1;
-						
+						Random random = new Random();
+						opcionColor = random.nextInt(4) + 1;
+
 					}
 					switch (opcionColor) {
 					case 1:
@@ -296,8 +391,8 @@ public class JuegoPrincipal {
 						break;
 					default:
 						System.out.println("Opción no válida. color aleatorio");
-			            Random random = new Random();
-			            opcionColor = random.nextInt(4) + 1;
+						Random random = new Random();
+						opcionColor = random.nextInt(4) + 1;
 						switch (opcionColor) {
 						case 1:
 							System.out.println("Rojo");
@@ -331,7 +426,6 @@ public class JuegoPrincipal {
 					}
 					mazoJugadorArreglo[seleccion]=null;
 					seleccionValida = true;
-
 				}
 				else if(cartaJugada.getValor().equals("Saltar") &&  cartaJugada.getColor()==cartaInicial.getColor()  ) {
 					System.out.println("Saltar");
@@ -391,11 +485,34 @@ public class JuegoPrincipal {
 					seleccionValida = true;
 				} else {
 					System.out.println("La carta seleccionada no es válida. Inténtalo de nuevo.");
-
 				}
 				cartaJuego=cartaInicial;
 			}
 		}
 		return cartaInicial;
+	}
+	public static boolean verificarSiEsNulo(int i, Carta[] mazoJugadorArreglo) {
+		boolean respuesta=false;
+		if (mazoJugadorArreglo[i]==null) {
+			respuesta=true;
+		}
+		return respuesta;
+	}
+	public static int[] obtenerIndicesConCartas(Carta[] arreglo) {
+		int contador = 0;
+		for (Carta carta : arreglo) {
+			if (carta != null) {
+				contador++;
+			}
+		}
+		int[] indicesConCartas = new int[contador];
+		int index = 0;
+
+		for (int i = 0; i < arreglo.length; i++) {
+			if (arreglo[i] != null) {
+				indicesConCartas[index++] = i;
+			}
+		}
+		return indicesConCartas;
 	}
 }

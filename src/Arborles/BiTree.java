@@ -4,9 +4,11 @@ import Estructuras.nodos.NumericNodoArbol;
 public class BiTree {
 	
 	private NumericNodoArbol root;
+	private NumericNodoArbol r;
 	
 	public BiTree() {
 		root=null;
+		
 	}
 	
 	public void add(int valor) {
@@ -54,5 +56,22 @@ public class BiTree {
 
 		
 	}
+	
+	public void inorder() {
+		inorder(r);
+	}
+	
+	private void inorder(NumericNodoArbol r) {
+		if(null!=r.getIzquierda()) {
+			inorder(r.getIzquierda());
+			System.out.print(r.getDato());
+			inorder(r.getDerecha());
+		}
+		
+	}
+	
+	
+	
+	
 
 }

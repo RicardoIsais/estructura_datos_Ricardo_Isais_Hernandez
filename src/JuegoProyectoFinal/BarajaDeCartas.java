@@ -118,20 +118,16 @@ public class BarajaDeCartas {
 	public Pilas mezclarMazo(Pilas mazoCartasTotal) {
 	    Random rand = new Random();
 	    Pilas mazoMezclado = new Pilas(mazoCartasTotal.size());
-
 	    ArrayList cartasOriginales = new ArrayList(mazoCartasTotal.size());
-
 	    while (!mazoCartasTotal.isEmpty()) {
 	        Carta carta =(Carta) mazoCartasTotal.pop();
 	        cartasOriginales.add(carta);
 	    }
-
 	    while (!cartasOriginales.isEmpty()) {
 	        int randomIndex = rand.nextInt(cartasOriginales.size());
 	        Carta carta =(Carta) cartasOriginales.remove(randomIndex);
 	        mazoMezclado.push(carta);
 	    }
-
 	    return mazoMezclado;
 	}
 	
