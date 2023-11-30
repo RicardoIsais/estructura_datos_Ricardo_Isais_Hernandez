@@ -253,7 +253,7 @@ public class JuegoPrincipal {
 				Carta cartaJugada = mazoJugadorArreglo[seleccion];
 				if (cartaJugada.getValor().equals("+4")) {
 					mazoJugadorArreglo[seleccion] = null;
-					System.out.println("+4: ");
+					System.out.println("+4 (Cambia de color): ");
 					System.out.println("Que color deseas que sea: \n1)Rojo\n2)Amarillo\n3)Azul\n4)Verde");
 					String opcionColorCadena;
 					int opcionColor=0;

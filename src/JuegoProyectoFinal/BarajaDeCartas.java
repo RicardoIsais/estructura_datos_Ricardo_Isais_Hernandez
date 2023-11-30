@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class BarajaDeCartas {
 	
 	public Pilas mazoDeCartas() {
-		Pilas mazoCartasTotal = new Pilas(104);
+		Pilas mazoCartasTotal = new Pilas(108);
 		mazoCartasTotal.push(new Carta("1","rojo"));
 		mazoCartasTotal.push(new Carta("2","rojo"));
 		mazoCartasTotal.push(new Carta("3","rojo"));
@@ -113,6 +113,11 @@ public class BarajaDeCartas {
 		mazoCartasTotal.push(new Carta("Cambio de color"," "));
 		mazoCartasTotal.push(new Carta("+4",""));
 		mazoCartasTotal.push(new Carta("+4",""));
+		
+		mazoCartasTotal.push(new Carta("+4",""));
+		mazoCartasTotal.push(new Carta("+4",""));
+		mazoCartasTotal.push(new Carta("Cambio de color"," "));
+		mazoCartasTotal.push(new Carta("Cambio de color"," "));
 		return mazoCartasTotal;	
 	}
 	public Pilas mezclarMazo(Pilas mazoCartasTotal) {
