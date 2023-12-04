@@ -3,23 +3,22 @@ import Estructuras.nodos.NumericNodoArbol;
 
 public class BiTree {
 	
-	private NumericNodoArbol root;
 	private NumericNodoArbol r;
 	
 	public BiTree() {
-		root=null;
+		r=null;
 		
 	}
 	
 	public void add(int valor) {
-		if (null==root) {
-			root=new NumericNodoArbol();
-			root.setDato(valor);
+		if (null==r) {
+			r=new NumericNodoArbol();
+			r.setDato(valor);
 		}
 		else {
 			NumericNodoArbol nodo=new NumericNodoArbol();
 			nodo.setDato(valor);
-			add(nodo,root);
+			add(nodo,r);
 			
 		}
 	}
@@ -50,7 +49,7 @@ public class BiTree {
 		if(null==nodo) {
 			return;
 		}
-		System.out.print(nodo.getDato());
+		System.out.println(nodo.getDato());
 		preorden(nodo.getIzquierda());
 		preorden(nodo.getDerecha());
 
@@ -62,15 +61,13 @@ public class BiTree {
 	}
 	
 	private void inorder(NumericNodoArbol r) {
-		if(null!=r.getIzquierda()) {
+		if(null!=r) {
 			inorder(r.getIzquierda());
-			System.out.print(r.getDato());
+			System.out.println(r.getDato());
 			inorder(r.getDerecha());
 		}
 		
 	}
-	
-	
 	
 	
 

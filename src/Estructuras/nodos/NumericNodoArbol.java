@@ -7,7 +7,7 @@ public class NumericNodoArbol {
 	public Integer getDato() {
 		return value;
 	}
-	public void setDato(int dato) {
+	public void setDato(int value) {
 		this.value = value;
 	}
 	public NumericNodoArbol getDerecha() {
@@ -20,8 +20,9 @@ public class NumericNodoArbol {
 		return izquierda;
 	}
 	public void setIzquierda(NumericNodoArbol izquierda) {
-		this.izquierda = izquierda;
+		this.izquierda =izquierda;
 	}
+
 
 
 }
