@@ -82,9 +82,22 @@ public class Biblioteca2 {
     
 
     
-	
-	
+    public static LinkedStack partesLibros(ArrayList lista) throws Exception{
+        LinkedStack partesL = new LinkedStack();
+        for (int i = 0; i < lista.size(); i++) {
+            String libro = (String) lista.get(i);
+            String[] partes = libro.split("-");
+            String fechalibro = partes[1]; 
+            String numeroLibro = partes[2];
+            partesL.push(fechalibro);
+            partesL.push(numeroLibro);
 
+    }
+        return partesL;
+    
+	
+	
+    }
 
 
 
